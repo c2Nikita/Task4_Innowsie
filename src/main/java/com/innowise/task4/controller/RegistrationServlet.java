@@ -17,7 +17,6 @@ import java.sql.SQLException;
 @WebServlet("/register")
 public class RegistrationServlet extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();
-
     private static final String LOGIN_PARAMETER = "login";
     private static final String PASSWORD_PARAMETER = "password";
     private static final String NAME_PARAMETER = "name";

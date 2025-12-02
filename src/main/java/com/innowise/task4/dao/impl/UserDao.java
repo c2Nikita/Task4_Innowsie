@@ -39,6 +39,10 @@ public class UserDao implements BaseDao<User> {
             WHERE id = ?
             """;
 
+    private static final String FIND_BY_LOGIN_AND_PASSWORD = """
+            SELECT id, login, password, name, email FROM users WHERE login = ? and password = ?
+            """;
+
     @Override
     public Optional<User> findById(Long id) throws SQLException {
         Connection connection = DBConnectionPool.getConnection();
@@ -104,6 +108,23 @@ public class UserDao implements BaseDao<User> {
         }
 
         return users;
+    }
+
+    public Optional<User> getByLoginAndPassword(String login, String password) throws SQLException {
+        BaseMapper<User> mapper = new UserMapper();
+        Connection connection = DBConnectionPool.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_LOGIN_AND_PASSWORD);
+        preparedStatement.setString(1,login);
+        preparedStatement.setString(2,password);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if(resultSet.next()) {
+
+            User user = mapper.map(resultSet);
+            return Optional.of(user);
+        }
+
+        return Optional.empty();
     }
 
 }

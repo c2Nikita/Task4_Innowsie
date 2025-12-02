@@ -7,22 +7,13 @@ import com.innowise.task4.util.EncoderSHA256;
 import com.innowise.task4.validator.UserValidator;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 
 public class UserService {
 
     public boolean create(String login, String password, String name, String email) throws RuntimeException, SQLException {
         BaseDao<User> baseDao = new UserDao();
-
-        User user2 = new User();
-        user2.setName("vlada");
-        user2.setEmail("vlada@mail.ru");
-        user2.setPassword("antilopa32");
-        user2.setLogin("BABY HIPPO");
-        user2.setId(5L);
-        baseDao.update(user2);
-
-
         UserValidator validator = new UserValidator();
         User user = new User();
 
@@ -43,6 +34,18 @@ public class UserService {
             return false;
         }
 
+
+    }
+
+    public User authenticate(String login, String password) {
+        UserDao userDao = new UserDao();
+        String ecncodedPassword = EncoderSHA256.encode(password);
+        try {
+            Optional<User> userOptional = userDao.getByLoginAndPassword(login, ecncodedPassword);
+            return userOptional.orElse(null);
+        } catch (SQLException e) {
+            return null;
+        }
 
     }
 }

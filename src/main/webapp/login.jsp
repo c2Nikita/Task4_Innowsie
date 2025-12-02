@@ -8,7 +8,10 @@
 <c:if test="${not empty okMessage}">
     <p style="color:green;">${okMessage}</p>
 </c:if>
-<form method="post" action="LoginServlet">
+<c:if test="${not empty errorMessage}">
+    <p style="color:red;">${errorMessage}</p>
+</c:if>
+<form method="post" action="login">
     <input type="text" name="login" placeholder="login"><br>
     <input type="password" name="password" placeholder="password"><br>
     <button type="submit">Sign In</button>
