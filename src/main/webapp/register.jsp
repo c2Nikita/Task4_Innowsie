@@ -20,6 +20,11 @@
         <input type="password" name="password" placeholder="password"><br>
         <input type="text" name="name" placeholder="name"><br>
         <input type="text" name="email" placeholder="email"><br>
+        <label for="select">Choose your role</label>
+        <select id="select" name="role">
+            <option value="COURIER"> Courier </option>
+            <option value="CLIENT"> Client </option>
+        </select><br>
         <button type="submit">Create Account</button>
     </form>
     <a href="http://localhost:8080">Back</a>

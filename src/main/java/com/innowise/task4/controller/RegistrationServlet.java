@@ -21,6 +21,7 @@ public class RegistrationServlet extends HttpServlet {
     private static final String PASSWORD_PARAMETER = "password";
     private static final String NAME_PARAMETER = "name";
     private static final String EMAIL_PARAMETER = "email";
+    private static final String ROLE_PARAMETER = "role";
     private static final String OK_ATTRIBUTE = "okMessage";
     private static final String ERROR_ATTRIBUTE = "errorMessage";
     private static final String OK_ATTRIBUTE_MESSAGE = "Your data is ok. Now login!";
@@ -32,9 +33,10 @@ public class RegistrationServlet extends HttpServlet {
         String password = request.getParameter(PASSWORD_PARAMETER);
         String name = request.getParameter(NAME_PARAMETER);
         String email = request.getParameter(EMAIL_PARAMETER);
+        String role = request.getParameter(ROLE_PARAMETER);
         boolean isCreated = false;
         try {
-            isCreated = userService.create(login, password, name, email);
+            isCreated = userService.create(login, password, name, email, role);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

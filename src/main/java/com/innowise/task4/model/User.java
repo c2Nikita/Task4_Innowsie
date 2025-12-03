@@ -13,6 +13,12 @@ public class User {
 
     private String password;
 
+    private UserRole role;
+
+    public UserRole getRole() {
+        return role;
+    }
+
     public Long getId() {
         return id;
     }
@@ -53,6 +59,10 @@ public class User {
         this.password = password;
     }
 
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -72,10 +82,12 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
+                "id='" + id + '\'' +
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
+                ", role=" + role +
                 '}';
     }
 

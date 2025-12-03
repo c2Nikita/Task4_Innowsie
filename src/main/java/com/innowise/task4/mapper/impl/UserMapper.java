@@ -2,6 +2,7 @@ package com.innowise.task4.mapper.impl;
 
 import com.innowise.task4.mapper.BaseMapper;
 import com.innowise.task4.model.User;
+import com.innowise.task4.model.UserRole;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +13,7 @@ public class UserMapper implements BaseMapper<User> {
     private static final String PASSWORD_COLUMN = "password";
     private static final String NAME_COLUMN = "name";
     private static final String ID_COLUMN = "id";
+    private static final String ROLE_COLUMN = "role";
     @Override
     public User map(ResultSet rs) throws SQLException {
         User user = new User();
@@ -20,6 +22,7 @@ public class UserMapper implements BaseMapper<User> {
         user.setPassword( rs.getString(PASSWORD_COLUMN));
         user.setName( rs.getString(NAME_COLUMN));
         user.setEmail( rs.getString(EMAIL_COLUMN));
+        user.setRole(UserRole.valueOf(rs.getString(ROLE_COLUMN)));
         return user;
     }
 }

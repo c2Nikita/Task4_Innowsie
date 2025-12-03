@@ -2,6 +2,7 @@ package com.innowise.task4.dao.impl;
 
 import com.innowise.task4.connection.DBConnectionPool;
 import com.innowise.task4.dao.BaseDao;
+import com.innowise.task4.dao.LoginDao;
 import com.innowise.task4.mapper.BaseMapper;
 import com.innowise.task4.mapper.impl.UserMapper;
 import com.innowise.task4.model.User;
@@ -14,15 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UserDao implements BaseDao<User> {
+public class UserDao implements LoginDao<User>{
 
     private static final String INSERT_USER = """
-            INSERT INTO users (login, password, name, email)
-            VALUES (?, ?, ?, ?);
+            INSERT INTO users (login, password, name, email, role)
+            VALUES (?, ?, ?, ?, ?);
             """;
 
     private static final String FIND_BY_ID = """
-            SELECT login, password, name, email FROM users WHERE id = ?
+            SELECT login, password, name, email, role FROM users WHERE id = ?
             """;
 
     private static final String DELETE_BY_ID = """
@@ -35,12 +36,12 @@ public class UserDao implements BaseDao<User> {
 
     private static final String UPDATE_USER = """
             UPDATE USERS
-            SET login = ?, password = ?, name = ?, email = ?
+            SET login = ?, password = ?, name = ?, email = ?, role = ?
             WHERE id = ?
             """;
 
     private static final String FIND_BY_LOGIN_AND_PASSWORD = """
-            SELECT id, login, password, name, email FROM users WHERE login = ? and password = ?
+            SELECT id, login, password, name, email, role FROM users WHERE login = ? and password = ?
             """;
 
     @Override
@@ -70,6 +71,7 @@ public class UserDao implements BaseDao<User> {
         statement.setString(2,user.getPassword());
         statement.setString(3,user.getName());
         statement.setString(4,user.getEmail());
+        statement.setString(5,user.getRole().toString());
         return statement.executeUpdate();
     }
 
@@ -81,7 +83,8 @@ public class UserDao implements BaseDao<User> {
         preparedStatement.setString(2,user.getPassword());
         preparedStatement.setString(3,user.getName());
         preparedStatement.setString(4,user.getEmail());
-        preparedStatement.setLong(5,user.getId());
+        preparedStatement.setString(5,user.getRole().toString());
+        preparedStatement.setLong(6,user.getId());
         return preparedStatement.executeUpdate();
     }
 
@@ -109,7 +112,7 @@ public class UserDao implements BaseDao<User> {
 
         return users;
     }
-
+    @Override
     public Optional<User> getByLoginAndPassword(String login, String password) throws SQLException {
         BaseMapper<User> mapper = new UserMapper();
         Connection connection = DBConnectionPool.getConnection();
