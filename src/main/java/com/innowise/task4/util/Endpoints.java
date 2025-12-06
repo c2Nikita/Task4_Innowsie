@@ -5,4 +5,5 @@ public class Endpoints {
     public static final String TO_LOGIN_PAGE ="/login.jsp";
     public static final String TO_REGISTRATION_PAGE ="/register.jsp";
     public static final String TO_MAIN_PAGE = "/main-page.jsp";
+    public static final String TO_ERROR_PAGE = "/error.jsp";
 }

@@ -15,14 +15,14 @@ public class UserMapper implements BaseMapper<User> {
     private static final String ID_COLUMN = "id";
     private static final String ROLE_COLUMN = "role";
     @Override
-    public User map(ResultSet rs) throws SQLException {
+    public User map(ResultSet resultSet) throws SQLException {
         User user = new User();
-        user.setId( rs.getLong(ID_COLUMN));
-        user.setLogin( rs.getString(LOGIN_COLUMN));
-        user.setPassword( rs.getString(PASSWORD_COLUMN));
-        user.setName( rs.getString(NAME_COLUMN));
-        user.setEmail( rs.getString(EMAIL_COLUMN));
-        user.setRole(UserRole.valueOf(rs.getString(ROLE_COLUMN)));
+        user.setId(resultSet.getLong(ID_COLUMN));
+        user.setLogin(resultSet.getString(LOGIN_COLUMN));
+        user.setPassword(resultSet.getString(PASSWORD_COLUMN));
+        user.setName(resultSet.getString(NAME_COLUMN));
+        user.setEmail(resultSet.getString(EMAIL_COLUMN));
+        user.setRole(UserRole.valueOf(resultSet.getString(ROLE_COLUMN)));
         return user;
     }
 }

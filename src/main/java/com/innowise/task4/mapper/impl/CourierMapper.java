@@ -15,13 +15,13 @@ public class CourierMapper implements BaseMapper<Courier> {
     private static final String RATING_COLUMN = "rating";
     private static final String TRANSPORT_TYPE_COLUMN = "transport_type";
     @Override
-    public Courier map(ResultSet rs) throws SQLException {
+    public Courier map(ResultSet resultSet) throws SQLException {
         Courier courier = new Courier();
-        courier.setId(rs.getLong(ID_COLUMN));
-        courier.setActive(rs.getBoolean(ACTIVE_COLUMN));
-        courier.setRating(rs.getLong( RATING_COLUMN));
-        courier.setTransportType(TransportType.valueOf(rs.getString(TRANSPORT_TYPE_COLUMN)));
-        courier.setUserId(rs.getLong(USER_ID_COLUMN));
+        courier.setId(resultSet.getLong(ID_COLUMN));
+        courier.setActive(resultSet.getBoolean(ACTIVE_COLUMN));
+        courier.setRating(resultSet.getLong( RATING_COLUMN));
+        courier.setTransportType(TransportType.valueOf(resultSet.getString(TRANSPORT_TYPE_COLUMN)));
+        courier.setUserId(resultSet.getLong(USER_ID_COLUMN));
         return null;
     }
 }

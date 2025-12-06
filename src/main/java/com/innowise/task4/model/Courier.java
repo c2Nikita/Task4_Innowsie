@@ -29,6 +29,9 @@ public class Courier {
     public double getRating() {
         return rating;
     }
+    public boolean getActive() {
+        return active;
+    }
 
     public boolean isActive() {
         return active;
