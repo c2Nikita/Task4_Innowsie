@@ -1,92 +1,54 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
-<html>
+<!DOCTYPE html>
+<html lang="ru">
 <head>
-    <title>Мой профиль</title>
-
+    <meta charset="UTF-8">
+    <title>Главная страница</title>
     <style>
         body {
             margin: 0;
-            padding: 0;
             font-family: Arial, sans-serif;
-            background: #f4f6f9;
+            background-color: #f4f6f9;
         }
 
-        .container {
-            max-width: 600px;
-            margin: 80px auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: #2c3e50;
+            color: white;
         }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #333;
-            font-size: 28px;
-        }
-
-        .profile-info {
-            font-size: 18px;
-            line-height: 1.8;
-        }
-
-        .label {
-            font-weight: bold;
-            color: #555;
-        }
-
-        .logout-btn {
-            display: block;
-            margin: 30px auto 0;
-            padding: 12px 25px;
-            background: #e53935;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-            text-align: center;
+        .header a {
+            color: white;
             text-decoration: none;
-            transition: 0.2s;
+            font-weight: bold;
+            margin-right: 20px;
         }
 
-        .logout-btn:hover {
-            background: #c62828;
+        .header a:hover {
+            text-decoration: underline;
         }
 
-        .avatar {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            display: block;
-            margin: 0 auto 25px;
-            background: #ddd url('https://cdn-icons-png.flaticon.com/512/847/847969.png') center / cover;
+        .content {
+            padding: 40px;
+            text-align: center;
         }
     </style>
 </head>
-
 <body>
 
-<div class="container">
-
-    <div class="avatar"></div>
-
-    <h1>Ваш профиль</h1>
-
-    <div class="profile-info">
-        <p><span class="label">Имя:</span> ${sessionScope.user.name}</p>
-        <p><span class="label">Логин:</span> ${sessionScope.user.login}</p>
-        <p><span class="label">Email:</span> ${user.email}</p>
-    </div>
-
-    <a class="logout-btn" href="http://localhost:8080/logout">Выйти</a>
+<div class="header">
+    <!-- Ссылка на профиль -->
+    <a href="http://localhost:8080/profile.jsp">Profile</a>
+    <!-- Здесь можно будет добавить другие элементы шапки -->
 </div>
 
-
+<div class="content">
+    <!-- Пока пустое содержимое -->
+</div>
 
 </body>
 </html>

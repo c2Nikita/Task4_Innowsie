@@ -4,8 +4,11 @@ import com.innowise.task4.dao.UserDao;
 import com.innowise.task4.dao.impl.UserDaoImpl;
 import com.innowise.task4.exception.ServiceException;
 import com.innowise.task4.mapper.BaseMapper;
+import com.innowise.task4.mapper.DtoMapper;
+import com.innowise.task4.mapper.impl.UserDtoMapper;
 import com.innowise.task4.mapper.impl.UserMapper;
 import com.innowise.task4.model.User;
+import com.innowise.task4.dto.UserDto;
 import com.innowise.task4.service.UserService;
 import com.innowise.task4.service.impl.UserServiceImpl;
 import com.innowise.task4.util.Endpoints;
@@ -35,9 +38,11 @@ public class LoginServlet extends HttpServlet {
     private static final String ERROR_ATTRIBUTE_MESSAGE = "Incorrect login or password";
 
     private UserService userService;
+    private DtoMapper<User, UserDto> dtoMapper;
 
     @Override
     public void init() {
+        this.dtoMapper = new UserDtoMapper();
         BaseMapper mapper = new UserMapper();
         UserDao userDao = new UserDaoImpl(mapper);
         UserValidator validator = new UserValidatorImpl();
@@ -51,10 +56,10 @@ public class LoginServlet extends HttpServlet {
 
         try {
             Optional<User> userOptional = userService.authenticate(login, password);
-
+            UserDto userDto = dtoMapper.map(userOptional.get());
             if (userOptional.isPresent()) {
                 HttpSession session = req.getSession();
-                session.setAttribute(USER_ATTRIBUTE, userOptional.get());
+                session.setAttribute(USER_ATTRIBUTE, userDto);
                 resp.sendRedirect(Endpoints.TO_MAIN_PAGE);
             } else {
                 req.setAttribute(ERROR_ATTRIBUTE, ERROR_ATTRIBUTE_MESSAGE);
@@ -62,6 +67,7 @@ public class LoginServlet extends HttpServlet {
             }
 
         } catch (ServiceException e) {
+            req.setAttribute(ERROR_ATTRIBUTE,e);
             req.getRequestDispatcher(Endpoints.TO_ERROR_PAGE).forward(req, resp);
         }
     }

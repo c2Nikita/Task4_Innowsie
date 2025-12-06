@@ -40,8 +40,18 @@
 <div class="error-container">
     <h1>Oops! Something went wrong.</h1>
     <p>We're sorry, but an unexpected error occurred.</p>
-    <p>Please try again later or contact support.</p>
-    <p><a href="/index.jsp">Go back to Home</a></p>
+
+    >
+    <c:if test="${not empty errorMessage}">
+        <p>Error details: ${errorMessage}</p>
+    </c:if>
+
+
+    <c:if test="${not empty error}">
+        <p>Error details: ${error.message}</p>
+    </c:if>
+
+    <p><a href="<c:url value='/index.jsp' />">Go back to Home</a></p>
 </div>
 </body>
 </html>

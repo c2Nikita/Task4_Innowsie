@@ -22,9 +22,15 @@ public class UserDaoImpl implements UserDao<User> {
             INSERT INTO users (login, password, name, email, role)
             VALUES (?, ?, ?, ?, ?);
             """;
+    private static final String INSERT_USER_WITH_RETURNING_ID = """
+            INSERT INTO users (login, password, name, email, role)
+            VALUES (?, ?, ?, ?, ?)
+            RETURNING id
+            """;
 
     private static final String FIND_BY_ID = """
-            SELECT login, password, name, email, role FROM users WHERE id = ?
+            SELECT login, password, name, email, role FROM users 
+            WHERE id = ?
             """;
 
     private static final String DELETE_BY_ID = """
@@ -42,9 +48,10 @@ public class UserDaoImpl implements UserDao<User> {
             """;
 
     private static final String FIND_BY_LOGIN = """
-            SELECT id, login, password, name, email, role FROM users WHERE login = ?
+            SELECT id, login, password, name, email, role FROM users 
+            WHERE login = ?
             """;
-
+    private static final String ID_PARAMETER = "id";
     private final BaseMapper<User> mapper;
     public UserDaoImpl(BaseMapper<User> mapper) {
         this.mapper = mapper;
@@ -84,7 +91,7 @@ public class UserDaoImpl implements UserDao<User> {
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getName());
             preparedStatement.setString(4, user.getEmail());
-            preparedStatement.setString(5, user.getRole().name());
+            preparedStatement.setObject(5, user.getRole().name(), java.sql.Types.OTHER);
 
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -103,7 +110,7 @@ public class UserDaoImpl implements UserDao<User> {
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getName());
             preparedStatement.setString(4, user.getEmail());
-            preparedStatement.setString(5, user.getRole().name());
+            preparedStatement.setObject(5, user.getRole().name(), java.sql.Types.OTHER);
             preparedStatement.setLong(6, user.getId());
 
             return preparedStatement.executeUpdate();
@@ -128,21 +135,24 @@ public class UserDaoImpl implements UserDao<User> {
 
     @Override
     public List<User> getAll() throws DaoException {
-        List<User> users = new ArrayList<>();
         try(
                 Connection connection = DBConnectionPool.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_USERS);
                 ResultSet resultSet = preparedStatement.executeQuery()
         ) {
+            List<User> users = new ArrayList<>();
+
             while (resultSet.next()) {
 
                 users.add(mapper.map(resultSet));
             }
 
             return users;
+
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+
     }
     @Override
     public Optional<User> findByLogin(String login) throws DaoException {
@@ -164,6 +174,31 @@ public class UserDaoImpl implements UserDao<User> {
         } catch (SQLException e) {
             throw new DaoException(e);
         }
+    }
+
+    @Override
+    public Long insertWithReturningId(User user, Connection connection) throws DaoException {
+        try(PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_WITH_RETURNING_ID)) {
+
+            preparedStatement.setString(1, user.getLogin());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, user.getName());
+            preparedStatement.setString(4, user.getEmail());
+            preparedStatement.setObject(5, user.getRole().name(), java.sql.Types.OTHER);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                if(resultSet.next()) {
+                    Long userId = resultSet.getLong(ID_PARAMETER);
+                    return userId;
+                } else {
+                    throw new DaoException("Cant get id");
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+
     }
 
 }

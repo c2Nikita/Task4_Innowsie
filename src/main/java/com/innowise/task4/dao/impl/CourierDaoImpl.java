@@ -1,21 +1,17 @@
 package com.innowise.task4.dao.impl;
 
 import com.innowise.task4.connection.DBConnectionPool;
-import com.innowise.task4.dao.CrudDao;
+import com.innowise.task4.dao.CourierDao;
 import com.innowise.task4.exception.DaoException;
 import com.innowise.task4.mapper.BaseMapper;
-import com.innowise.task4.mapper.impl.CourierMapper;
 import com.innowise.task4.model.Courier;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class CourierDao implements CrudDao<Courier> {
+public class CourierDaoImpl implements CourierDao {
 
     private static final String FIND_BY_ID = """
             SELECT id, user_id, transport_type, rating, active from couriers
@@ -39,7 +35,7 @@ public class CourierDao implements CrudDao<Courier> {
             """;
     private final BaseMapper<Courier> mapper;
 
-    public CourierDao(BaseMapper<Courier> mapper) {
+    public CourierDaoImpl(BaseMapper<Courier> mapper) {
         this.mapper = mapper;
     }
     @Override
@@ -75,7 +71,7 @@ public class CourierDao implements CrudDao<Courier> {
         ){
 
             preparedStatement.setLong(1, courier.getUserId());
-            preparedStatement.setString(2, courier.getTransportType().name());
+            preparedStatement.setObject(2, courier.getTransportType().name(), Types.OTHER);
             preparedStatement.setDouble(3, courier.getRating());
             preparedStatement.setBoolean(4, courier.getActive());
 
@@ -93,7 +89,7 @@ public class CourierDao implements CrudDao<Courier> {
                 PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_COURIER);
         ) {
             preparedStatement.setLong(1, courier.getUserId());
-            preparedStatement.setString(2, courier.getTransportType().name());
+            preparedStatement.setObject(2, courier.getTransportType().name(), Types.OTHER);
             preparedStatement.setDouble(3, courier.getRating());
             preparedStatement.setBoolean(4, courier.getActive());
             preparedStatement.setLong(5, courier.getId());
@@ -134,6 +130,21 @@ public class CourierDao implements CrudDao<Courier> {
 
             return couriers;
 
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public int insert(Courier courier, Connection connection) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_COURIER)){
+
+            preparedStatement.setLong(1, courier.getUserId());
+            preparedStatement.setObject(2, courier.getTransportType().name(), Types.OTHER);
+            preparedStatement.setDouble(3, courier.getRating());
+            preparedStatement.setBoolean(4, courier.getActive());
+
+            return preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException(e);
         }
