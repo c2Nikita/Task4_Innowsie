@@ -16,11 +16,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/get-active-couriers")
-public class GetActiveCouriers extends HttpServlet {
+public class GetActiveCouriersServlet extends HttpServlet {
 
     private CourierDao courierDao;
     private CourierService courierService;
