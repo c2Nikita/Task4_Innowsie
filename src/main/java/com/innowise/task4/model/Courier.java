@@ -33,10 +33,6 @@ public class Courier {
         return active;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }

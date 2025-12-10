@@ -13,6 +13,7 @@ public class OrderMapper implements BaseMapper<Order> {
     private static final String COURIER_ID_COLUMN = "courierId";
     private static final String DESCRIPTION_COLUMN = "description";
     private static final String COMPLETED_COLUMN = "completed";
+    private static final String AMOUNT_COLUMN = "amount";
 
     @Override
     public Order map(ResultSet resultSet) throws SQLException {
@@ -22,6 +23,7 @@ public class OrderMapper implements BaseMapper<Order> {
         order.setCourierId(resultSet.getLong(COURIER_ID_COLUMN));
         order.setDescription(resultSet.getString(DESCRIPTION_COLUMN));
         order.setCompleted(resultSet.getBoolean(COMPLETED_COLUMN));
+        order.setAmount(resultSet.getDouble(AMOUNT_COLUMN));
 
         return order;
     }

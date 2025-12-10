@@ -21,11 +21,11 @@ public class OrderDaoImpl implements OrderDao {
         this.mapper = mapper;
     }
     public static final String INSERT_ORDER = """
-            INSERT INTO orders (user_id,courier_id,description,completed)
-            VALUES (?,?,?,?)
+            INSERT INTO orders (user_id,courier_id, description,completed, amount)
+            VALUES (?,?,?,?,?)
             """;
     public static final String FIND_BY_ID = """
-            SELECT id, user_id, courier_id, description, completed FROM orders
+            SELECT id, user_id, courier_id, description, completed, amount check FROM orders
             WHERE id = ?
             """;
     public static final String GET_ALL_ORDERS = """
@@ -39,7 +39,7 @@ public class OrderDaoImpl implements OrderDao {
 
     private static final String UPDATE_ORDER = """
             UPDATE orders
-            SET user_id = ?, courier_id = ?, description = ?, completed = ?
+            SET user_id = ?, courier_id = ?, description = ?, completed = ?, amount = ?
             WHERE id = ?
             """;
 
@@ -47,6 +47,7 @@ public class OrderDaoImpl implements OrderDao {
             SELECT * FROM orders
             WHERE user_id = ?
             """;
+
     @Override
     public Optional<Order> findById(Long id) throws DaoException {
         Optional<Order> result = Optional.empty();
@@ -79,6 +80,7 @@ public class OrderDaoImpl implements OrderDao {
             preparedStatement.setLong(2,order.getCourierId());
             preparedStatement.setString(3,order.getDescription());
             preparedStatement.setBoolean(4,order.getCompleted());
+            preparedStatement.setDouble(5,order.getAmount());
 
             return preparedStatement.executeUpdate();
 
@@ -98,6 +100,7 @@ public class OrderDaoImpl implements OrderDao {
             preparedStatement.setString(3, order.getDescription());
             preparedStatement.setBoolean(4, order.getCompleted());
             preparedStatement.setLong(5, order.getId());
+            preparedStatement.setDouble(6, order.getAmount());
 
             return preparedStatement.executeUpdate();
         } catch (SQLException e) {

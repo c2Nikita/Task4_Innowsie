@@ -9,6 +9,7 @@ public class Order {
     private Long CourierId;
     private String description;
     private boolean completed;
+    private double amount;
 
     public Long getId() {
         return id;
@@ -48,6 +49,14 @@ public class Order {
 
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double check) {
+        this.amount = check;
     }
 
     @Override

@@ -22,6 +22,6 @@ public class CourierMapper implements BaseMapper<Courier> {
         courier.setRating(resultSet.getLong( RATING_COLUMN));
         courier.setTransportType(TransportType.valueOf(resultSet.getString(TRANSPORT_TYPE_COLUMN)));
         courier.setUserId(resultSet.getLong(USER_ID_COLUMN));
-        return null;
+        return courier;
     }
 }

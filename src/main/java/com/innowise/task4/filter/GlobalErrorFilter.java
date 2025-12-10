@@ -24,7 +24,7 @@ public class GlobalErrorFilter implements Filter {
 
         try {
             filterChain.doFilter(request, response);
-        } catch (Throwable t) {
+        } catch (Exception t) {
             request.setAttribute(ERROR_ATTRIBUTE, t);
             request.getRequestDispatcher(Endpoints.TO_ERROR_PAGE).forward(request, response);
         }

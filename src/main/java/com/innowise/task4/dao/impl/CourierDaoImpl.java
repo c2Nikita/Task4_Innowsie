@@ -33,6 +33,11 @@ public class CourierDaoImpl implements CourierDao {
     private static final String GET_ALL_COURIERS = """
             SELECT * FROM couriers
             """;
+
+    private static final String GET_ACTIVATE_COURIERS = """
+            SELECT id, user_id, transport_type, rating, active FROM couriers
+            WHERE active = ?
+            """;
     private final BaseMapper<Courier> mapper;
 
     public CourierDaoImpl(BaseMapper<Courier> mapper) {
@@ -145,6 +150,29 @@ public class CourierDaoImpl implements CourierDao {
             preparedStatement.setBoolean(4, courier.getActive());
 
             return preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public List<Courier> getActivateCouriers() throws DaoException {
+        try (
+                Connection connection = DBConnectionPool.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(GET_ACTIVATE_COURIERS)
+        ) {
+            preparedStatement.setBoolean(1, true);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                List<Courier> couriers = new ArrayList<>();
+
+                while(resultSet.next()) {
+                    couriers.add(mapper.map(resultSet));
+                }
+
+                return couriers;
+            }
+
         } catch (SQLException e) {
             throw new DaoException(e);
         }
